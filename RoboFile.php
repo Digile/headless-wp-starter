@@ -87,7 +87,7 @@ class RoboFile extends \Robo\Tasks {
         }
 
         $this->_exec(
-            'mysql -uroot -p' . $db_pass . ' -h ' . $db_ip . " -e 'create user if not exists "
+            'mysql -uroot -p' . $db_pass .  " -e 'create user if not exists "
             . $opts['wp-db-name'] . '@localhost identified with mysql_native_password by "'
             . $opts['wp-db-name'] . "\"'"
         );
@@ -96,11 +96,11 @@ class RoboFile extends \Robo\Tasks {
             . " -e 'create database if not exists " . $opts['wp-db-name'] . "'"
         );
         $this->_exec(
-            'mysql -uroot -p' . $db_pass . ' -h ' . $db_ip . ' -e "grant all privileges on ' . $opts['wp-db-name']
+            'mysql -uroot -p' . $db_pass .  ' -e "grant all privileges on ' . $opts['wp-db-name']
             . '.* to ' . $opts['wp-db-name'] . '@localhost"'
         );
 
-        $this->_exec( 'mysql -uroot -p' . $db_pass . ' -h ' . $db_ip . " -e 'flush privileges'" );
+        $this->_exec( 'mysql -uroot -p' . $db_pass .  " -e 'flush privileges'" );
 
         $this->wp( 'core download --version=4.9.7 --locale=en_US --force' );
         $this->_exec( 'rm wordpress/wp-config.php > /dev/null 2>&1 || true' );

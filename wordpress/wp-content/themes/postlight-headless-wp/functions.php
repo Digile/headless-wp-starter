@@ -23,3 +23,20 @@ require_once 'inc/acf-options.php';
 
 // Add custom API endpoints
 require_once 'inc/api-routes.php';
+
+
+add_filter( 'rest_ad_query', function( $args ) {
+
+  $ignore = array('per_page', 'search', 'order', 'orderby', 'slug');
+
+  foreach ( $_GET as $key => $value ) {
+    if (!in_array($key, $ignore)) {
+      $args['meta_query'][] = array(
+        'key'   => $key,
+        'value' => $value,
+      );
+    }
+  }
+
+  return $args;
+});
