@@ -19,13 +19,13 @@ class RoboFile extends \Robo\Tasks {
      */
     public function wordpressSetup(
         $opts = [
-            'wp-user' => 'nedstark',
-            'wp-pw' => 'winteriscoming',
+            'wp-user' => 'admin',
+            'wp-pw' => 'thinklazy',
             'wp-theme-dir' => 'postlight-headless-wp',
             'wp-theme-name' => 'Postlight Headless WP Starter',
-            'wp-email' => 'nedstark@headlesswpstarter.dev',
+            'wp-email' => 'developers@thinklazy.io',
             'wp-db-name' => 'wp_headless',
-            'wp-description' => 'Just another (headless) WordPress site',
+            'wp-description' => 'Headless WP',
             'wp-plugins' => [],
             'docker' => false,
         ]
@@ -113,7 +113,7 @@ class RoboFile extends \Robo\Tasks {
 
         $install_command = implode( ' ', [
             'core install',
-            '--url=0.0.0.0:8080',
+            '--url=0.0.0.0',
             '--title="' . $opts['wp-theme-name'] . '"',
             '--admin_user="' . $opts['wp-user'] . '"',
             '--admin_password="' . $opts['wp-pw'] . '"',
@@ -159,6 +159,7 @@ class RoboFile extends \Robo\Tasks {
         // Set the site description
         $this->wp( 'option update blogdescription "' . $opts['wp-description'] . '"' );
 
+        //TODO: remove sample posts leaving them for now for test purposes
         // Update the Hello World post
         $this->wp(
             'post update 1 wp-content/themes/postlight-headless-wp/post-content/sample-post.txt '.
