@@ -113,7 +113,7 @@ class RoboFile extends \Robo\Tasks {
 
         $install_command = implode( ' ', [
             'core install',
-            '--url=0.0.0.0',
+            '--url=localhost',
             '--title="' . $opts['wp-theme-name'] . '"',
             '--admin_user="' . $opts['wp-user'] . '"',
             '--admin_password="' . $opts['wp-pw'] . '"',
@@ -187,6 +187,10 @@ class RoboFile extends \Robo\Tasks {
             .'introducing-postlights-wordpress-react-starter-kit-a61e2633c48c'
         );
         $this->wp( 'menu location assign header-menu header-menu' );
+
+        //SET SITE URL & HOME
+        $this->wp( 'option update siteurl http://headless.digile.xyz' );
+        $this->wp( 'option update home http://headless.digile.xyz' );
 
         $this->io()->success(
             'Great. You can now log into WordPress at: http://localhost:8080/wp-admin ('
