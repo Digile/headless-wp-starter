@@ -113,7 +113,7 @@ class RoboFile extends \Robo\Tasks {
 
         $install_command = implode( ' ', [
             'core install',
-            '--url=localhost:8080',
+            '--url=0.0.0.0:8080',
             '--title="' . $opts['wp-theme-name'] . '"',
             '--admin_user="' . $opts['wp-user'] . '"',
             '--admin_password="' . $opts['wp-pw'] . '"',
