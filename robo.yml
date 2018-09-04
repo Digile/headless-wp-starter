@@ -6,9 +6,9 @@ command:
           wp-pw: thinklazy
           wp-theme-dir: postlight-headless-wp
           wp-theme-name: Postlight Headless WP Starter
-          wp-email: nedstark@headlesswpstarter.dev
+          wp-email: developers@thinklazy.io
           wp-db-name: wp_headless
-          wp-description: Just another (headless) WordPress site by your friends at Postlight
+          wp-description: Headless WP
           jwt-secret: secret
           # wp-plugins is optional
           # If not set, Robo will activate all the plugins that are installed.
