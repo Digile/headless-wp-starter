@@ -27,6 +27,7 @@ class RoboFile extends \Robo\Tasks {
             'wp-db-name' => 'wp_headless',
             'wp-description' => 'Headless WP',
             'wp-plugins' => [],
+            'jwt-secret' => 'secret',
             'docker' => false,
         ]
     ) {
@@ -85,7 +86,7 @@ class RoboFile extends \Robo\Tasks {
                 $db_ip = 'localhost';
             }
         }
-        
+
         $this->_exec(
             'mysql -uroot -p' . $db_pass .  " -e 'create user if not exists "
             . $opts['wp-db-name'] . '@localhost identified with mysql_native_password by "'
@@ -108,6 +109,13 @@ class RoboFile extends \Robo\Tasks {
             'core config --dbname=' . $opts['wp-db-name'] . ' --dbuser=' . $opts['wp-db-name'] . ' --dbpass='
             . $opts['wp-db-name'] . ' --dbhost=' . $db_ip
         );
+
+
+        //Add JWT conf
+
+        $this->wp('config set JWT_AUTH_SECRET_KEY '.  $opts['jwt-secret'] . '  --add --type=constant ');
+        $this->wp('config set JWT_AUTH_CORS_ENABLE TRUE --add --type=constant ');
+
         $this->wp( 'db drop --yes' );
         $this->wp( 'db create' );
 
@@ -191,6 +199,9 @@ class RoboFile extends \Robo\Tasks {
         //SET SITE URL & HOME
         $this->wp( 'option update siteurl http://headless.digile.xyz' );
         $this->wp( 'option update home http://headless.digile.xyz' );
+
+        //SET JWT
+        $this->wp( 'option update JWT_AUTH_SECRET_KEY "' . "lalal" . '"' );
 
         $this->io()->success(
             'Great. You can now log into WordPress at: http://localhost:8080/wp-admin ('
