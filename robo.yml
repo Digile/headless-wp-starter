@@ -6,7 +6,7 @@ command:
           wp-pw: thinklazy
           wp-theme-dir: postlight-headless-wp
           wp-theme-name: Postlight Headless WP Starter
-          wp-email: developers@thinklazy.io
+          wp-email: nedstark@headlesswpstarter.dev
           wp-db-name: wp_headless
           wp-description: Just another (headless) WordPress site by your friends at Postlight
           # wp-plugins is optional
