@@ -19,13 +19,6 @@ class RoboFile extends \Robo\Tasks {
      */
     public function wordpressSetup(
         $opts = [
-            'wp-user' => 'admin',
-            'wp-pw' => 'thinklazy',
-            'wp-theme-dir' => 'postlight-headless-wp',
-            'wp-theme-name' => 'Postlight Headless WP Starter',
-            'wp-email' => 'developers@thinklazy.io',
-            'wp-db-name' => 'wp_headless',
-            'wp-description' => 'Headless WP',
             'wp-plugins' => [],
             'docker' => false,
         ]
@@ -193,8 +186,7 @@ class RoboFile extends \Robo\Tasks {
         $this->wp( 'option update home http://headless.digile.xyz' );
 
         $this->io()->success(
-            'Great. You can now log into WordPress at: http://localhost:8080/wp-admin ('
-            . $opts['wp-user'] . '/' . $opts['wp-pw'] . ')'
+            'Great. You can now log into WordPress'
         );
     }
 
