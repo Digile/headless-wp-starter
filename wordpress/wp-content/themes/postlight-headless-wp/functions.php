@@ -40,3 +40,12 @@ add_filter( 'rest_ad_query', function( $args ) {
 
   return $args;
 });
+
+
+function wpse28782_remove_menu_items() {
+  if( !current_user_can( 'administrator' ) || current_user_can( 'admanager' )):
+      remove_menu_page( 'edit.php?post_type=ad' );
+  endif;
+}
+
+add_action( 'admin_menu', 'wpse28782_remove_menu_items' );
