@@ -10,9 +10,8 @@ add_action( 'rest_api_init', function () {
     add_filter( 'rest_pre_serve_request', function ( $value ) {
         $http_origin = $_SERVER['HTTP_ORIGIN'];
 
-        if ($http_origin == "http://localhost:3000" || $http_origin == "http://localhost:3100" || $http_origin == "http://www.domain3.com")
-        {  
-        
+        if (in_array($http_origin, allowed_forntend_origins()))
+        {         
             header( 'Access-Control-Allow-Origin: ' . $http_origin );
             header( 'Access-Control-Allow-Methods: GET' );
             header( 'Access-Control-Allow-Credentials: true' );
