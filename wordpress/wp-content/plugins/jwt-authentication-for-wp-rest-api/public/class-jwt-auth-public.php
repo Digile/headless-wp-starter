@@ -92,6 +92,9 @@ class Jwt_Auth_Public
         if ($enable_cors) {
             $headers = apply_filters('jwt_auth_cors_allow_headers', 'Access-Control-Allow-Headers, Content-Type, Authorization');
             header(sprintf('Access-Control-Allow-Headers: %s', $headers));
+            header( 'Access-Control-Allow-Origin: ' . $http_origin );
+            header( 'Access-Control-Allow-Methods: GET' );
+            header( 'Access-Control-Allow-Credentials: true' );
         }
     }
 
