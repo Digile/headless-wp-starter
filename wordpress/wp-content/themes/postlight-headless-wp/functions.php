@@ -51,19 +51,36 @@ function wpse28782_remove_menu_items() {
 add_action( 'admin_menu', 'wpse28782_remove_menu_items' );
 
 // Register routes
-register_rest_route( 'headless/v1', '/post', [
-            'methods'  => 'GET',
-            'callback' => 'rest_get_posts_by_interest',
-            'args' => [
-                'interest' => array_merge(
-                    $post_interest_arg,
-                    [
-                        'required' => true,
-                    ]
-                ),
-            ],
-] );
 
+add_action(
+  'rest_api_init',
+  function () {
+      // Define API endpoint arguments
+      $interest_arg = [
+          'validate_callback' => function ( $param, $request, $key ) {
+              return( is_string( $param ) );
+          },
+      ];
+      $post_interest_arg = array_merge(
+          $interest_arg,
+          [
+              'description' => 'String representing a valid post interest',
+          ]
+      );
+
+      register_rest_route( 'headless/v1', '/post', [
+                  'methods'  => 'GET',
+                  'callback' => 'rest_get_posts_by_interest',
+                  'args' => [
+                      'interest' => array_merge(
+                          $post_interest_arg,
+                          [
+                              'required' => true,
+                          ]
+                      ),
+                  ],
+      ] );
+  });
 
 /**
  * Respond to a REST API request to get post data by acf interest
