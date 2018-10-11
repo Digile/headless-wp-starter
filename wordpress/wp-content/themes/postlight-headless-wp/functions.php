@@ -50,6 +50,16 @@ function wpse28782_remove_menu_items() {
 
 add_action( 'admin_menu', 'wpse28782_remove_menu_items' );
 
+
+add_filter( 'rest_post_query', 'include_meta_queries', 10, 2 );
+
+function include_meta_queries($vars, $request) {
+        $meta_query = json_decode($request['meta_query'], true);
+        $vars['meta_query'] = $meta_query;
+
+        return $vars;
+}
+
 // Register routes
 
 add_action(
