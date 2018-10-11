@@ -49,3 +49,24 @@ function wpse28782_remove_menu_items() {
 }
 
 add_action( 'admin_menu', 'wpse28782_remove_menu_items' );
+
+
+add_filter( 'rest_query_vars', function ( $valid_vars ) {
+  return array_merge( $valid_vars, array( 'interest', 'meta_query' ) );
+} );
+
+add_filter( 'rest_post_query', function( $args, $request ) {
+  $interest   = $request->get_param( 'interest' );
+
+  if ( ! empty( $highlight ) ) {
+      $args['meta_query'] = array(
+          array(
+              'key'     => 'interest',
+              'value'   => array($interest),
+              'compare' => 'IN',
+          )
+      );      
+  }
+
+  return $args;
+}, 10, 2 );
