@@ -50,45 +50,63 @@ function wpse28782_remove_menu_items() {
 
 add_action( 'admin_menu', 'wpse28782_remove_menu_items' );
 
+// Register routes
+register_rest_route( 'headless/v1', '/post', [
+            'methods'  => 'GET',
+            'callback' => 'rest_get_posts_by_interest',
+            'args' => [
+                'interest' => array_merge(
+                    $post_interest_arg,
+                    [
+                        'required' => true,
+                    ]
+                ),
+            ],
+] );
+
+
 /**
- * Plugin Name: WP REST API filter parameter
- * Description: This plugin adds a "filter" query parameter to API post collections to filter returned results based on public WP_Query parameters, adding back the "filter" parameter that was removed from the API when it was merged into WordPress core.
- * Author: WP REST API Team
- * Author URI: http://v2.wp-api.org
- * Version: 0.1
- * License: GPL2+
- **/
-add_action( 'rest_api_init', 'rest_api_filter_add_filters' );
- /**
-  * Add the necessary filter to each post type
-  **/
-function rest_api_filter_add_filters() {
-	foreach ( get_post_types( array( 'show_in_rest' => true ), 'objects' ) as $post_type ) {
-		add_filter( 'rest_' . $post_type->name . '_query', 'rest_api_filter_add_filter_param', 10, 2 );
-	}
-}
-/**
- * Add the filter parameter
+ * Respond to a REST API request to get post data by acf interest
  *
- * @param  array           $args    The query arguments.
- * @param  WP_REST_Request $request Full details about the request.
- * @return array $args.
- **/
-function rest_api_filter_add_filter_param( $args, $request ) {
-	// Bail out if no filter parameter is set.
-	if ( empty( $request['filter'] ) || ! is_array( $request['filter'] ) ) {
-		return $args;
-	}
-	$filter = $request['filter'];
-	if ( isset( $filter['posts_per_page'] ) && ( (int) $filter['posts_per_page'] >= 1 && (int) $filter['posts_per_page'] <= 100 ) ) {
-		$args['posts_per_page'] = $filter['posts_per_page'];
-	}
-	global $wp;
-	$vars = apply_filters( 'rest_query_vars', $wp->public_query_vars );
-	foreach ( $vars as $var ) {
-		if ( isset( $filter[ $var ] ) ) {
-			$args[ $var ] = $filter[ $var ];
-		}
-	}
-	return $args;
+ * @param WP_REST_Request $request Request.
+ * @return WP_REST_Response
+ */
+function rest_get_posts_by_interest( WP_REST_Request $request ) {
+
+  $interest = $request->get_param( 'interest' );
+
+  return get_content_by_interest($interest,'post');
+}
+
+
+/**
+ * Returns a post or page given a slug. Returns false if no post matches.
+ *
+ * @param str $slug Slug
+ * @param str $type Valid values are 'post' or 'page'
+ * @return Post
+ */
+function get_content_by_interest( $interest, $type = 'post' ) {
+  $content_in_array = in_array(
+      $type,
+      [
+          'post',
+          'page',
+      ],
+      true
+  );
+  if ( ! $content_in_array ) {
+      $type = 'post';
+  }
+  $args = [
+      'interest'        => $interest,
+      'post_type'   => $type,
+      'post_status' => 'publish'
+  ];
+
+  // phpcs:ignore WordPress.VIP.RestrictedFunctions.get_posts_get_posts
+  $post_search_results = get_posts( $args );
+
+  return $post_search_results;
+ 
 }
