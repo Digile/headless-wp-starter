@@ -25,6 +25,11 @@ require_once 'inc/acf-options.php';
 require_once 'inc/api-routes.php';
 
 
+//Featured images support
+add_theme_support( 'post-thumbnails' );
+
+
+
 add_filter( 'rest_ad_query', function( $args ) {
 
   $ignore = array('per_page', 'search', 'order', 'orderby', 'slug');
